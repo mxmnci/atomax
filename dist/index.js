@@ -22,6 +22,9 @@ const client = new alpaca_1.AlpacaClient({
     },
     rate_limit: true
 });
+express_1.default.get("/", (_req, res) => {
+    res.send("Atomax is functional!");
+});
 express_1.default.post("/webhook", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = req.body;

@@ -10,6 +10,10 @@ const client = new AlpacaClient({
   rate_limit: true
 });
 
+app.get("/", (_req, res) => {
+  res.send("Atomax is functional!");
+});
+
 app.post("/webhook", async (req, res) => {
   try {
     const data = req.body;
