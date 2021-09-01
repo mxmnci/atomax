@@ -23,6 +23,7 @@ app.post("/webhook", async (req, res) => {
     }
 
     // const account = await client.getAccount();
+    console.log(data);
 
     return res.status(200).json(data);
   } catch (err) {
