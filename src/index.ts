@@ -18,16 +18,17 @@ app.post("/webhook", async (req, res) => {
   try {
     const data = req.body;
 
+    console.log(data);
+
     if (data.secret !== process.env.SECRET) {
       return res.status(401).send("Unauthorized");
     }
 
     // const account = await client.getAccount();
-    console.log(data);
 
     return res.status(200).json(data);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return res.status(500).send("Internal Server Error");
   }
 });
