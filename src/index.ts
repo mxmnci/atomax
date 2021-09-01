@@ -18,16 +18,29 @@ app.post("/webhook", async (req, res) => {
   try {
     const data = req.body;
 
-    console.log(data);
-    console.log("secret", process.env.SECRET);
+    if (!process.env.SECRET) {
+      throw new Error(
+        "The SECRET environment variable is undefined. Please provide a value."
+      );
+    }
 
     if (!data.secret || data.secret !== process.env.SECRET) {
       return res.status(401).send("Unauthorized");
     }
 
-    // const account = await client.getAccount();
+    switch (data.order) {
+      case "BUY":
+        console.log("BUY");
+        break;
+      case "SELL":
+        console.log("SELL");
+        break;
+      default:
+        console.log("UNKNOWN");
+        break;
+    }
 
-    return res.status(200).json(data);
+    return res.status(200).send("OK");
   } catch (err) {
     console.error(err);
     return res.status(500).send("Internal Server Error");
