@@ -19,8 +19,9 @@ app.post("/webhook", async (req, res) => {
     const data = req.body;
 
     console.log(data);
+    console.log("secret", process.env.SECRET);
 
-    if (data.secret !== process.env.SECRET) {
+    if (!data.secret || data.secret !== process.env.SECRET) {
       return res.status(401).send("Unauthorized");
     }
 
