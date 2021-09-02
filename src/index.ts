@@ -1,4 +1,3 @@
-import "newrelic";
 import executeAction from "./executeAction";
 import app from "./express";
 import discordBot from "./discord/bot";
@@ -11,6 +10,10 @@ mongoose.connect(mongoURI);
 const db = mongoose.connection;
 db.on("error", (err) => console.error(err));
 db.once("open", () => console.log("Connected to Database"));
+
+app.get("/", async (req, res) => {
+  res.send("Atomax is functional! 🚀");
+});
 
 app.post("/webhook", async (req, res) => {
   try {
