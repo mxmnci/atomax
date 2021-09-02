@@ -1,3 +1,4 @@
+import "newrelic";
 import executeAction from "./executeAction";
 import app from "./express";
 import discordBot from "./discord/bot";
