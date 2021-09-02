@@ -13,7 +13,8 @@
   "rules": {
     "no-console": "off",
     "@typescript/no-console": "off",
-    "quotes": [2, "double", "avoid-escape"],
+    "quotes": "off",
+    "@typescript-eslint/quotes": [2, "double", "avoid-escape"],
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -24,7 +25,10 @@
         "tsx": "never"
       }
     ],
-    "comma-dangle": ["error", "never"]
+    "comma-dangle": ["error", "never"],
+    "semi": "off",
+    "@typescript-eslint/semi": [2, "always"],
+    "operator-linebreak": ["error", "after"]
   },
   "settings": {
     "import/resolver": {

@@ -1,42 +1,31 @@
-// import { AlpacaClient } from "@master-chief/alpaca";
 import app from "./express";
-
-// const client = new AlpacaClient({
-//   credentials: {
-//     key: process.env.ALPACA_KEY_ID,
-//     secret: process.env.ALPACA_SECRET_KEY,
-//     paper: true
-//   },
-//   rate_limit: true
-// });
-
-app.get("/", (_req, res) => {
-  res.send("Atomax is functional!");
-});
+import { placeBuyOrder } from "./api/orders";
+import { closePosition } from "./api/positions";
+import isWebhookSecretValid from "./util/isWebhookSecretValid";
 
 app.post("/webhook", async (req, res) => {
   try {
-    const data = req.body;
+    const { order, secret, qty, notional, symbol } = req.body;
 
-    if (!process.env.SECRET) {
-      throw new Error(
-        "The SECRET environment variable is undefined. Please provide a value."
-      );
+    if (!isWebhookSecretValid(secret)) {
+      return res.status(401).send("Invalid secret!");
     }
 
-    if (!data.secret || data.secret !== process.env.SECRET) {
-      return res.status(401).send("Unauthorized");
-    }
-
-    switch (data.order) {
+    switch (order) {
       case "BUY":
-        console.log("BUY");
+        console.log("Placing buy order...");
+        placeBuyOrder({
+          qty,
+          notional,
+          symbol
+        });
         break;
       case "SELL":
-        console.log("SELL");
+        console.log("Closing position...");
+        closePosition({ symbol });
         break;
       default:
-        console.log("UNKNOWN");
+        console.error("Unknown order type");
         break;
     }
 
