@@ -1,10 +1,20 @@
-import { alpacaClient } from "../config";
+import { AlpacaClient } from "@master-chief/alpaca";
+import { User } from "../models/User";
 import BuyOrder from "../types/BuyOrder";
 
-export const placeBuyOrder = async (params: BuyOrder) => {
+export const placeBuyOrder = async (params: BuyOrder, user: User) => {
   const { qty, notional, symbol } = params;
 
   try {
+    const alpacaClient = new AlpacaClient({
+      credentials: {
+        key: user.alpacaApiKey,
+        secret: user.alpacaSecretKey,
+        paper: user.alpacaPaperTrading
+      },
+      rate_limit: true
+    });
+
     if (qty && notional) {
       throw new Error("Please specify only a quantity or a notional amount!");
     }
@@ -14,9 +24,9 @@ export const placeBuyOrder = async (params: BuyOrder) => {
     }
 
     const result = await alpacaClient.placeOrder({
-      symbol: symbol,
-      ...(qty && { qty: qty }),
-      ...(notional && { notional: notional }),
+      symbol,
+      ...(qty && { qty }),
+      ...(notional && { notional }),
       side: "buy",
       type: "market",
       time_in_force: "day"
