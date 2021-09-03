@@ -4,3 +4,4 @@ export * from "./deleteprofile";
 export * from "./buy";
 export * from "./sell";
 export * from "./positions";
+export * from "./fractionalbuy";

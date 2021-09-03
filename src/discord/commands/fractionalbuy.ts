@@ -3,10 +3,12 @@ import { webhookURL } from "../../config";
 import Command from "../../types/Command";
 import objectToPrettyJSON from "../../util/objectToPrettyJSON";
 
-export const buy: Command = {
+export const fractionalbuy: Command = {
   data: new SlashCommandBuilder()
-    .setName("buy")
-    .setDescription("Create a buy order for use with TradingView Alerts")
+    .setName("fractionalbuy")
+    .setDescription(
+      "Create a fractional buy order for use with TradingView Alerts"
+    )
     .addStringOption((option) =>
       option
         .setName("symbol")
@@ -15,8 +17,8 @@ export const buy: Command = {
     )
     .addStringOption((option) =>
       option
-        .setName("qty")
-        .setDescription("The amount of shares you want to buy")
+        .setName("notional")
+        .setDescription("The notional amount of the stock you want to buy")
         .setRequired(true)
     ),
   async execute(interaction) {
@@ -25,7 +27,7 @@ export const buy: Command = {
         discordId: interaction.member.user.id,
         action: "BUY",
         symbol: String(interaction.options.get("symbol").value),
-        qty: Number(interaction.options.get("qty").value)
+        notional: Number(interaction.options.get("notional").value)
       };
 
       interaction.reply({
