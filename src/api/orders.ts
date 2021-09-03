@@ -24,6 +24,14 @@ export const placeBuyOrder = async (params: BuyOrder, user: User) => {
       rate_limit: true
     });
 
+    const positions = await alpacaClient.getPositions();
+
+    if (positions.some((position) => position.symbol === symbol)) {
+      return channel.send(
+        `There was an attempt to buy ${symbol} but you already own it!`
+      );
+    }
+
     if (qty && notional) {
       throw new Error("Please specify only a quantity or a notional amount!");
     }

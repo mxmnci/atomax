@@ -27,7 +27,7 @@ export const closePosition = async (params: ClosePosition, user: User) => {
 
     if (!positions.some((position) => position.symbol === symbol)) {
       return channel.send(
-        `TradingView indicated a Sell but you do not have any positions for ${symbol}. This is normal if you just bought into a stock.`
+        `TradingView indicated a Sell but you do not have any positions for ${symbol}. This is normal if you just started watching a stock with Atomax.`
       );
     }
 
