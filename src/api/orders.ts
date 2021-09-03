@@ -49,9 +49,8 @@ export const placeBuyOrder = async (params: BuyOrder, user: User) => {
       ...(qty && { qty }),
       ...(notional && { notional }),
       side: "buy",
-      type: "stop",
+      type: "market",
       time_in_force: "day",
-      stop_price: stopLossPrice,
       stop_loss: {
         stop_price: stopLossPrice
       }
