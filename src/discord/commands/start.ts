@@ -4,7 +4,7 @@ import Command from "../../types/Command";
 export const start: Command = {
   data: new SlashCommandBuilder()
     .setName("start")
-    .setDescription("Send a DM to begin stock trading"),
+    .setDescription("Learn how to start trading with Atomax"),
   async execute(interaction) {
     try {
       interaction.reply({

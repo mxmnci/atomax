@@ -22,6 +22,9 @@ mongoose_1.default.connect(config_1.mongoURI);
 const db = mongoose_1.default.connection;
 db.on("error", (err) => console.error(err));
 db.once("open", () => console.log("Connected to Database"));
+express_1.default.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.send("Atomax is functional! 🚀");
+}));
 express_1.default.post("/webhook", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { discordId } = req.body;
