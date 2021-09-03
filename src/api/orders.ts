@@ -1,9 +1,18 @@
 import { AlpacaClient } from "@master-chief/alpaca";
 import { User } from "../models/User";
 import BuyOrder from "../types/BuyOrder";
+import discordBot from "../discord/bot";
+import { TextChannel } from "discord.js";
+import objectToPrettyJSON from "../util/objectToPrettyJSON";
 
 export const placeBuyOrder = async (params: BuyOrder, user: User) => {
   const { qty, notional, symbol } = params;
+
+  const channel = discordBot.channels.cache.get("882463600629923921");
+
+  if (!(channel instanceof TextChannel)) {
+    return console.error("Not a text channel!");
+  }
 
   try {
     const alpacaClient = new AlpacaClient({
@@ -23,17 +32,25 @@ export const placeBuyOrder = async (params: BuyOrder, user: User) => {
       throw new Error("Please specify either a quantity or a notional amount!");
     }
 
+    const asset = await alpacaClient.getSnapshot({ symbol });
+    const latestClosePrice = asset.minuteBar.c;
+    const stopLossPrice = latestClosePrice - latestClosePrice * 0.0225;
+
     const result = await alpacaClient.placeOrder({
       symbol,
       ...(qty && { qty }),
       ...(notional && { notional }),
       side: "buy",
-      type: "market",
-      time_in_force: "day"
+      type: "stop",
+      time_in_force: "day",
+      stop_price: stopLossPrice,
+      stop_loss: {
+        stop_price: stopLossPrice
+      }
     });
 
-    console.log("Order placed!", result);
+    channel.send(`Buy order placed!\n${objectToPrettyJSON(result)}`);
   } catch (err) {
-    console.error(err);
+    channel.send(`Something went wrong!\n\n${err.message}`);
   }
 };

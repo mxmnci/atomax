@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { webhookURL } from "../../config";
 import Command from "../../types/Command";
-import objectToPrettyJSON from "../util/objectToPrettyJSON";
+import objectToPrettyJSON from "../../util/objectToPrettyJSON";
 
 export const buy: Command = {
   data: new SlashCommandBuilder()
