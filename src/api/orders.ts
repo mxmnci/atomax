@@ -1,9 +1,9 @@
 import { AlpacaClient } from "@master-chief/alpaca";
-import { User } from "../models/User";
 import BuyOrder from "../types/BuyOrder";
 import discordBot from "../discord/bot";
 import { TextChannel } from "discord.js";
 import objectToPrettyJSON from "../util/objectToPrettyJSON";
+import User from "../types/User";
 
 export const placeBuyOrder = async (params: BuyOrder, user: User) => {
   const { qty, notional, symbol } = params;

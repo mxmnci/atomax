@@ -1,6 +1,6 @@
-import { User } from "./models/User";
 import { placeBuyOrder } from "./api/orders";
 import { closePosition } from "./api/positions";
+import User from "./types/User";
 import WebhookData from "./types/WebhookData";
 
 const executeAction = (data: WebhookData, user: User) => {

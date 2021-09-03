@@ -1,19 +1,12 @@
 import mongoose from "mongoose";
+import User from "../types/User";
 
-export interface User {
-  discordId: string;
-  alpacaApiKey: string;
-  alpacaSecretKey: string;
-  alpacaPaperTrading: boolean;
-  createdAt: Date;
-}
-
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema<User>({
   discordId: { type: String, required: true, unique: true },
   alpacaApiKey: { type: String, required: true },
   alpacaSecretKey: { type: String, required: true },
   alpacaPaperTrading: { type: Boolean, required: true },
-  createdAt: { type: Date, required: true, default: Date.now }
+  createdAt: { type: Date, required: true, default: new Date(Date.now()) }
 });
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model<User>("User", userSchema);

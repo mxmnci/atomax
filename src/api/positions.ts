@@ -1,7 +1,7 @@
 import { AlpacaClient, ClosePosition } from "@master-chief/alpaca";
 import { TextChannel } from "discord.js";
-import { User } from "../models/User";
 import discordBot from "../discord/bot";
+import User from "../types/User";
 import objectToPrettyJSON from "../util/objectToPrettyJSON";
 
 export const closePosition = async (params: ClosePosition, user: User) => {

@@ -2,7 +2,7 @@ import executeAction from "./executeAction";
 import app from "./express";
 import discordBot from "./discord/bot";
 import { discordBotToken, mongoURI } from "./config";
-import User, { User as UserType } from "./models/User";
+import User from "./models/User";
 import mongoose from "mongoose";
 
 mongoose.connect(mongoURI);
@@ -26,7 +26,7 @@ app.post("/webhook", async (req, res) => {
         .send("You are not authorized to POST to this webhook!");
     }
 
-    const user: any = await User.findOne({ discordId });
+    const user = await User.findOne({ discordId });
 
     if (!user) {
       console.log("User has not yet been initialized!");

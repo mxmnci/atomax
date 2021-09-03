@@ -10,7 +10,7 @@ export const positions: Command = {
     .setDescription("List your Alpaca account's current positions"),
   async execute(interaction) {
     try {
-      const user: any = await User.findOne({
+      const user = await User.findOne({
         discordId: interaction.member.user.id
       });
 

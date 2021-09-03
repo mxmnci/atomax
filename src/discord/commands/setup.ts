@@ -44,13 +44,13 @@ export const setup: Command = {
 
       const account = await alpacaClient.getAccount();
 
-      const existingUser: any = await User.findOne({
+      const existingUser = await User.findOne({
         discordId: interaction.member.user.id
       });
 
       if (existingUser) {
         existingUser.alpacaApiKey = APIKEY;
-        existingUser.alpacaApiSecret = APISECRET;
+        existingUser.alpacaSecretKey = APISECRET;
         existingUser.alpacaPaperTrading = PAPERTRADING;
         await existingUser.save();
         return interaction.reply({
