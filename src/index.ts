@@ -4,6 +4,7 @@ import discordBot from "./discord/bot";
 import { discordBotToken, mongoURI } from "./config";
 import User from "./models/User";
 import mongoose from "mongoose";
+import { TextChannel } from "discord.js";
 
 mongoose.connect(mongoURI);
 
@@ -16,28 +17,27 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/webhook", async (req, res) => {
+  const channel = discordBot.channels.cache.get("882463600629923921");
+
+  if (!(channel instanceof TextChannel)) {
+    return console.error("Not a text channel!");
+  }
+
   try {
     const { discordId } = req.body;
 
-    if (!discordBot.users.fetch(discordId)) {
-      console.log("Discord ID is not valid!");
-      return res
-        .status(401)
-        .send("You are not authorized to POST to this webhook!");
-    }
+    await discordBot.users.fetch(discordId);
+
+    channel.send(`Processing request for <@!${discordId}>`);
 
     const user = await User.findOne({ discordId });
-
-    if (!user) {
-      console.log("User has not yet been initialized!");
-      return res.status(404).send("User not found!");
-    }
 
     executeAction(req.body, user);
 
     return res.status(200).send("OK");
   } catch (err) {
     console.error(err);
+    channel.send(`Something went wrong: ${err.message}`);
     return res.status(500).send("Internal Server Error");
   }
 });
