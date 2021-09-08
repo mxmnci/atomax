@@ -6,7 +6,8 @@ const userSchema = new mongoose.Schema<User>({
   alpacaApiKey: { type: String, required: true },
   alpacaSecretKey: { type: String, required: true },
   alpacaPaperTrading: { type: Boolean, required: true },
-  createdAt: { type: Date, required: true, default: new Date(Date.now()) }
+  createdAt: { type: Date, required: true, default: new Date(Date.now()) },
+  activeStocks: { type: [String], required: true, default: [] }
 });
 
 export default mongoose.model<User>("User", userSchema);

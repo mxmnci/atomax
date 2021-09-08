@@ -12,7 +12,7 @@ export const deleteprofile: Command = {
 
       return interaction.reply({
         content: "Your account data has been deleted successfully!",
-        ephemeral: false
+        ephemeral: true
       });
     } catch (err) {
       console.error(err);

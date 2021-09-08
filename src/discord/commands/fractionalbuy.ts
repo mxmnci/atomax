@@ -34,7 +34,7 @@ export const fractionalbuy: Command = {
         content: `To execute buy orders whenever a TradingView alert fires you must check the "Webhook URL" option and paste in this link: ${webhookURL}\n\nThen paste the code below into the "message" section of the alert. You can change the "Alert name" to whatever you want.\n\n${objectToPrettyJSON(
           tradingViewAlertMessage
         )}`,
-        ephemeral: false
+        ephemeral: true
       });
     } catch (err) {
       console.error(err);

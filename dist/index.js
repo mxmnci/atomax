@@ -12,12 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = __importDefault(require("mongoose"));
 const executeAction_1 = __importDefault(require("./executeAction"));
 const express_1 = __importDefault(require("./express"));
 const bot_1 = __importDefault(require("./discord/bot"));
 const config_1 = require("./config");
 const User_1 = __importDefault(require("./models/User"));
-const mongoose_1 = __importDefault(require("mongoose"));
+const getTextChannel_1 = require("./util/getTextChannel");
 mongoose_1.default.connect(config_1.mongoURI);
 const db = mongoose_1.default.connection;
 db.on("error", (err) => console.error(err));
@@ -26,24 +27,18 @@ express_1.default.get("/", (req, res) => __awaiter(void 0, void 0, void 0, funct
     res.send("Atomax is functional! 🚀");
 }));
 express_1.default.post("/webhook", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const channel = (0, getTextChannel_1.getTextChannel)("882463600629923921");
     try {
         const { discordId } = req.body;
-        if (!bot_1.default.users.fetch(discordId)) {
-            console.log("Discord ID is not valid!");
-            return res
-                .status(401)
-                .send("You are not authorized to POST to this webhook!");
-        }
+        yield bot_1.default.users.fetch(discordId);
+        channel.send(`Processing request for <@!${discordId}>`);
         const user = yield User_1.default.findOne({ discordId });
-        if (!user) {
-            console.log("User has not yet been initialized!");
-            return res.status(404).send("User not found!");
-        }
         (0, executeAction_1.default)(req.body, user);
         return res.status(200).send("OK");
     }
     catch (err) {
         console.error(err);
+        channel.send(`Something went wrong: ${err.message}`);
         return res.status(500).send("Internal Server Error");
     }
 }));

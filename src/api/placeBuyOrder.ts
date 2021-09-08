@@ -1,28 +1,22 @@
-import { AlpacaClient } from "@master-chief/alpaca";
 import BuyOrder from "../types/BuyOrder";
-import discordBot from "../discord/bot";
-import { TextChannel } from "discord.js";
 import objectToPrettyJSON from "../util/objectToPrettyJSON";
 import User from "../types/User";
+import { getTextChannel } from "../util/getTextChannel";
+import { getAlpacaClient } from "../util/getAlpacaClient";
 
 export const placeBuyOrder = async (params: BuyOrder, user: User) => {
   const { qty, notional, symbol } = params;
 
-  const channel = discordBot.channels.cache.get("882463600629923921");
-
-  if (!(channel instanceof TextChannel)) {
-    return console.error("Not a text channel!");
-  }
+  const channel = getTextChannel("882463600629923921");
 
   try {
-    const alpacaClient = new AlpacaClient({
-      credentials: {
-        key: user.alpacaApiKey,
-        secret: user.alpacaSecretKey,
-        paper: user.alpacaPaperTrading
-      },
-      rate_limit: true
-    });
+    if (!user.activeStocks.includes(symbol)) {
+      throw new Error(
+        `A buy order was sent for ${symbol} but it is not in your active stocks.`
+      );
+    }
+
+    const alpacaClient = getAlpacaClient(user);
 
     const positions = await alpacaClient.getPositions();
 
@@ -58,6 +52,6 @@ export const placeBuyOrder = async (params: BuyOrder, user: User) => {
 
     channel.send(`Buy order placed!\n${objectToPrettyJSON(result)}`);
   } catch (err) {
-    channel.send(`Something went wrong!\n\n${err.message}`);
+    channel.send(err.message);
   }
 };

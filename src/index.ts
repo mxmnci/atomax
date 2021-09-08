@@ -1,10 +1,10 @@
+import mongoose from "mongoose";
 import executeAction from "./executeAction";
 import app from "./express";
 import discordBot from "./discord/bot";
 import { discordBotToken, mongoURI } from "./config";
 import User from "./models/User";
-import mongoose from "mongoose";
-import { TextChannel } from "discord.js";
+import { getTextChannel } from "./util/getTextChannel";
 
 mongoose.connect(mongoURI);
 
@@ -17,11 +17,7 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/webhook", async (req, res) => {
-  const channel = discordBot.channels.cache.get("882463600629923921");
-
-  if (!(channel instanceof TextChannel)) {
-    return console.error("Not a text channel!");
-  }
+  const channel = getTextChannel("882463600629923921");
 
   try {
     const { discordId } = req.body;

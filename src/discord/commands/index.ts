@@ -5,3 +5,5 @@ export * from "./buy";
 export * from "./sell";
 export * from "./positions";
 export * from "./fractionalbuy";
+export * from "./starttrading";
+export * from "./stoptrading";

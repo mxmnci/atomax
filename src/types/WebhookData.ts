@@ -4,4 +4,5 @@ export default interface WebhookData {
   qty?: number;
   notional?: number;
   symbol?: string;
+  activeStocks?: string[];
 }
