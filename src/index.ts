@@ -22,7 +22,7 @@ app.post("/webhook", async (req, res) => {
   try {
     const { discordId } = req.body;
 
-    console.log(`test`, req.body);
+    await discordBot.users.fetch(discordId);
 
     channel.send(`Processing request for <@!${discordId}>`);
 
