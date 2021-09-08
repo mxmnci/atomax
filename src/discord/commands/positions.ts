@@ -31,7 +31,7 @@ export const positions: Command = {
 
       interaction.reply({
         content: `Positions: \n${objectToPrettyJSON(positions)}`,
-        ephemeral: true
+        ephemeral: false
       });
     } catch (err) {
       console.error(err);

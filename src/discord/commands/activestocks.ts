@@ -1,17 +1,20 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import User from "../../models/User";
 import Command from "../../types/Command";
+import { listActiveStocks } from "../../util/listActiveStocks";
 
-export const deleteprofile: Command = {
+export const activestocks: Command = {
   data: new SlashCommandBuilder()
-    .setName("deleteprofile")
-    .setDescription("Delete all data associated with Atomax"),
+    .setName("activestocks")
+    .setDescription("List your active stocks"),
   async execute(interaction) {
     try {
-      await User.deleteOne({ discordId: interaction.member.user.id });
+      const user = await User.findOne({
+        discordId: interaction.member.user.id
+      });
 
       return interaction.reply({
-        content: "Your account data has been deleted successfully!",
+        content: listActiveStocks(user),
         ephemeral: false
       });
     } catch (err) {

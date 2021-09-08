@@ -2,6 +2,7 @@ import User from "../types/User";
 import WebhookData from "../types/WebhookData";
 import { getAlpacaClient } from "../util/getAlpacaClient";
 import { getTextChannel } from "../util/getTextChannel";
+import { listActiveStocks } from "../util/listActiveStocks";
 
 export const stopTrading = async (data: WebhookData, user: User) => {
   const channel = getTextChannel("882463600629923921");
@@ -29,21 +30,13 @@ export const stopTrading = async (data: WebhookData, user: User) => {
       return channel.send(
         `Position for ${
           data.symbol
-        } has been closed and it has been removed from your active stocks.\n\n Active stocks: ${
-          savedUser.activeStocks.length > 0
-            ? savedUser.activeStocks.toString()
-            : "none"
-        }`
+        } has been closed and it has been removed from your active stocks.\n\n Active stocks: ${listActiveStocks(
+          savedUser
+        )}`
       );
     }
 
-    return channel.send(
-      `Active stocks: ${
-        savedUser.activeStocks.length > 0
-          ? savedUser.activeStocks.toString()
-          : "none"
-      }`
-    );
+    return channel.send(listActiveStocks(savedUser));
   } catch (err) {
     console.error(err);
     channel.send(`Something went wrong ${err.message}`);

@@ -55,7 +55,7 @@ export const setup: Command = {
         await existingUser.save();
         return interaction.reply({
           content: `Your Alpaca credentials have been updated!\n\nBuying power: $${account.buying_power}\nEquity: $${account.equity}\nPaper trading: ${PAPERTRADING}`,
-          ephemeral: true
+          ephemeral: false
         });
       }
 
@@ -70,13 +70,13 @@ export const setup: Command = {
 
       return interaction.reply({
         content: `Your Alpaca credentials have been linked to your Discord account!\n\nBuying power: $${account.buying_power}\nEquity: $${account.equity}\nPaper trading: ${PAPERTRADING}`,
-        ephemeral: true
+        ephemeral: false
       });
     } catch (err) {
       console.error(err);
       interaction.reply({
         content: `Something went wrong`,
-        ephemeral: true
+        ephemeral: false
       });
     }
   }
