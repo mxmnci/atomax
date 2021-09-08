@@ -58,7 +58,7 @@ bot_1.default.on("interactionCreate", (interaction) => __awaiter(void 0, void 0,
         console.error(err);
         yield interaction.reply({
             content: "There was an error while executing this command!",
-            ephemeral: true
+            ephemeral: false
         });
     }
 }));

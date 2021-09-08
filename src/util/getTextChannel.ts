@@ -4,9 +4,13 @@ import discordBot from "../discord/bot";
 
 export const getTextChannel = (channelId: string): TextChannel => {
   const channel = discordBot.channels.cache.get(channelId);
-  if (!(channel instanceof TextChannel)) {
-    throw new Error(`Channel ${channelId} is not a text channel`);
+  try {
+    if (!(channel instanceof TextChannel)) {
+      throw new Error(`Channel ${channelId} is not a text channel`);
+    }
+    return channel;
+  } catch (err) {
+    console.error(err);
+    return null;
   }
-
-  return channel;
 };
