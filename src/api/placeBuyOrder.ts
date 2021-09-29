@@ -36,7 +36,7 @@ export const placeBuyOrder = async (params: BuyOrder, user: User) => {
 
     const asset = await alpacaClient.getSnapshot({ symbol });
     const latestClosePrice = asset.minuteBar.c;
-    const stopLossPrice = latestClosePrice - latestClosePrice * 0.0225;
+    const stopLossPrice = latestClosePrice - latestClosePrice * 0.015;
 
     const result = await alpacaClient.placeOrder({
       symbol,
