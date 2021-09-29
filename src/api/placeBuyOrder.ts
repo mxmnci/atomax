@@ -5,7 +5,7 @@ import { getTextChannel } from "../util/getTextChannel";
 import { getAlpacaClient } from "../util/getAlpacaClient";
 
 export const placeBuyOrder = async (params: BuyOrder, user: User) => {
-  const { qty, notional, symbol } = params;
+  const { qty, notional, symbol, stoploss } = params;
 
   const channel = getTextChannel("882463600629923921");
 
@@ -36,7 +36,7 @@ export const placeBuyOrder = async (params: BuyOrder, user: User) => {
 
     const asset = await alpacaClient.getSnapshot({ symbol });
     const latestClosePrice = asset.minuteBar.c;
-    const stopLossPrice = latestClosePrice - latestClosePrice * 0.015;
+    const stopLossPrice = latestClosePrice - latestClosePrice * stoploss;
 
     const result = await alpacaClient.placeOrder({
       symbol,
@@ -44,7 +44,7 @@ export const placeBuyOrder = async (params: BuyOrder, user: User) => {
       ...(notional && { notional }),
       side: "buy",
       type: "market",
-      time_in_force: "day",
+      time_in_force: "gtc",
       stop_loss: {
         stop_price: stopLossPrice
       }

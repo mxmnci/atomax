@@ -5,4 +5,5 @@ export default interface WebhookData {
   notional?: number;
   symbol?: string;
   activeStocks?: string[];
+  stoploss?: number;
 }

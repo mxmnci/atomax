@@ -6,7 +6,7 @@ import { startTrading } from "./api/startTrading";
 import { stopTrading } from "./api/stopTrading";
 
 const executeAction = (data: WebhookData, user: User) => {
-  const { action, qty, notional, symbol } = data;
+  const { action, qty, notional, symbol, stoploss } = data;
   try {
     switch (action) {
       case "START_TRADING":
@@ -23,7 +23,8 @@ const executeAction = (data: WebhookData, user: User) => {
           {
             qty,
             notional,
-            symbol
+            symbol,
+            stoploss
           },
           user
         );
